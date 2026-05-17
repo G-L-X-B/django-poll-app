@@ -38,7 +38,7 @@ class QuestionModelTests(TestCase):
 
 def create_question(question_text, days):
     """
-    Create a question with text given in `quetion_text` and published
+    Create a question with text given in `question_text` and published
     the given number of `days` offset to now (negative for past,
     positive for future).
     """
@@ -64,7 +64,7 @@ class QuestionIndexViewTests(TestCase):
         )
 
     def test_future_question(self):
-        """Questions with pub_date in the past are displayed."""
+        """Questions with pub_date in the future are not displayed."""
         create_question(question_text='Future question', days=30)
         response = self.client.get(reverse('polls:index'))
         self.assertContains(response, 'No polls are available.')
@@ -105,7 +105,7 @@ class QuestionDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
-    def test_test_question(self):
+    def test_past_question(self):
         """
         The detail view of a question with pub_date in the past
         displays the question's text.
